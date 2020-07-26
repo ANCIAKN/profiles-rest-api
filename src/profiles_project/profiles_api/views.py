@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from . import serializers
-
+from . import models
 # Create your views here.
 
 class HelloApiView(APIView):
@@ -56,7 +56,7 @@ class HelloApiView(APIView):
 
 
 class HelloViewSet(viewsets.ViewSet):
-    """Test API viewset."""
+    """Test API ViewSet."""
 
     serializer_class = serializers.HelloSerializer
 
@@ -64,9 +64,9 @@ class HelloViewSet(viewsets.ViewSet):
         """Return a hello message."""
 
         a_viewset = [
-              'Uses actions (list, create, retrieve, update, partial_update)',
-              'Automatically maps to URLs using Routers',
-              'provides more functionality with less code.'
+            'Uses actions (list, create, retrieve, update, partial_update)',
+            'Automatically maps to URLs using Routers',
+            'Provides more functionality with less code.'
         ]
 
         return Response({'message': 'Hello!', 'a_viewset': a_viewset})
@@ -81,12 +81,13 @@ class HelloViewSet(viewsets.ViewSet):
             message = 'Hello {0}'.format(name)
             return Response({'message': message})
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def  retrieve(self, request, pk=None):
-         """Handles getting an object by its ID."""
+    def retrieve(self, request, pk=None):
+        """Handles getting an object by its ID."""
 
-         return Response({'http_method': 'GET'})
+        return Response({'http_method': 'GET'})
 
     def update(self, request, pk=None):
         """Handles updating an object."""
@@ -102,3 +103,11 @@ class HelloViewSet(viewsets.ViewSet):
         """Handles removing an object."""
 
         return Response({'http_method': 'DELETE'})
+
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handles creating, creating and updating profiles."""
+
+    serializer_class = serializers.UserProfileSerializer
+    queryset = models.UserProfile.objects.all()
